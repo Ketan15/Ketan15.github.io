@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin - Bhatts Organic Food & Spices</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+			<div class="logo">
+				<img src="../images/logo.jpg" alt="Bhatts Organic" class="brand-logo">
+			</div>
+                <small style="color:rgba(255,255,255,0.5); font-size:11px;">Super Admin Panel</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" onclick="showSection('dashboard')"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="#" onclick="showSection('admins')"><i class="fas fa-users-cog"></i> Admin Users</a></li>
+                <li><a href="#" onclick="showSection('products')"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="#" onclick="showSection('orders')"><i class="fas fa-shopping-bag"></i> Orders</a></li>
+                <li><a href="#" onclick="showSection('expenses')"><i class="fas fa-receipt"></i> Expenses</a></li>
+                <li><a href="#" onclick="showSection('purchases')"><i class="fas fa-truck"></i> Purchases</a></li>
+                <li><a href="#" onclick="showSection('margin')"><i class="fas fa-percentage"></i> Margin Calculator</a></li>
+                <li><a href="#" onclick="showSection('qrcodes')"><i class="fas fa-qrcode"></i> QR / Barcodes</a></li>
+                <div class="sidebar-divider"></div>
+                <li><a href="#" onclick="showSection('customers')"><i class="fas fa-users"></i> Customers</a></li>
+                <li><a href="#" onclick="showSection('stock')"><i class="fas fa-warehouse"></i> Stock Balance</a></li>
+                <div class="sidebar-divider"></div>
+                <li>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div style="display:flex; align-items:center; gap:15px;">
+                    <button class="action-btn" onclick="toggleSidebar()" style="display:none;" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="pageTitle">Dashboard</h2>
+                </div>
+                <div class="top-bar-right">
+                    <div class="notification-bell" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notifBadge">0</span>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">SA</div>
+                        <span id="userName">Super Admin</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <div id="section-dashboard" class="section-content">
+                    <div class="stats-grid" id="dashboardStats">
+                        <!-- Filled by JS -->
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Orders</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Products</th>
+                                            <th>Total</th>
+                                            <th>Payment</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentOrdersTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Users Section -->
+                <div id="section-admins" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Admin Users</h3>
+                            <button class="btn btn-primary btn-sm" onclick="openModal('addAdminModal')">
+                                <i class="fas fa-plus"></i> Add Admin
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminUsersTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Section -->
+                <div id="section-products" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Products / Masalas</h3>
+                            <button class="btn btn-primary btn-sm" onclick="openModal('addProductModal')">
+                                <i class="fas fa-plus"></i> Add Product
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Price/Unit</th>
+                                            <th>Stock</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productsTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Section -->
+                <div id="section-orders" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>All Orders</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Products</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                            <th>Payment Mode</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="allOrdersTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expenses Section -->
+                <div id="section-expenses" class="section-content" style="display:none;">
+                    <div class="expense-summary" id="expenseSummary">
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Expenses Record</h3>
+                            <button class="btn btn-primary btn-sm" onclick="openModal('addExpenseModal')">
+                                <i class="fas fa-plus"></i> Add Expense
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th>Amount</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="expensesTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Purchases Section -->
+                <div id="section-purchases" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Purchases Record</h3>
+                            <button class="btn btn-primary btn-sm" onclick="openModal('addPurchaseModal')">
+                                <i class="fas fa-plus"></i> Add Purchase
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Supplier</th>
+                                            <th>Item</th>
+                                            <th>Qty</th>
+                                            <th>Amount</th>
+                                            <th>GST (%)</th>
+                                            <th>GST Amount</th>
+                                            <th>Total</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="purchasesTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Margin Calculator Section -->
+                <div id="section-margin" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Margin Calculator</h3>
+                        </div>
+                        <div class="card-body">
+                            <p style="margin-bottom: 20px; color: var(--text-light);">Set margin percentage for each product to calculate final selling price.</p>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Base Price (₹)</th>
+                                            <th>Margin (%)</th>
+                                            <th>Margin Amount (₹)</th>
+                                            <th>Final Price (₹)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="marginTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Codes Section -->
+                <div id="section-qrcodes" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Social Media QR Codes / Barcodes</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>WhatsApp Number (with country code)</label>
+                                <div class="inline-form">
+                                    <div class="form-group">
+                                        <input type="text" id="whatsappNumber" placeholder="+919876543210" value="">
+                                    </div>
+                                    <button class="btn btn-primary btn-sm" onclick="saveQRSettings()" style="height:45px;">Save & Generate</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top:15px;">
+                                <label>Instagram Username</label>
+                                <div class="inline-form">
+                                    <div class="form-group">
+                                        <input type="text" id="instagramUsername" placeholder="bhattsorganic" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="qr-management" style="margin-top:30px;">
+                                <div class="qr-card">
+                                    <h4><i class="fab fa-whatsapp" style="color:#25d366;"></i> WhatsApp QR</h4>
+                                    <div class="qr-display" id="adminWhatsappQR"></div>
+                                    <p style="color:var(--text-light); font-size:13px;">Customers can scan to chat on WhatsApp</p>
+                                </div>
+                                <div class="qr-card">
+                                    <h4><i class="fab fa-instagram" style="color:#e1306c;"></i> Instagram QR</h4>
+                                    <div class="qr-display" id="adminInstagramQR"></div>
+                                    <p style="color:var(--text-light); font-size:13px;">Customers can scan to follow on Instagram</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customers Section -->
+                <div id="section-customers" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Registered Customers</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>Email</th>
+                                            <th>Registered On</th>
+                                            <th>Total Orders</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="customersTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stock Balance Section -->
+                <div id="section-stock" class="section-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Stock Balance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Current Stock</th>
+                                            <th>Sold</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stockTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Add Admin Modal -->
+    <div class="modal-overlay" id="addAdminModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="adminModalTitle">Add Admin User</h3>
+                <button class="modal-close" onclick="closeModal('addAdminModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="adminForm" onsubmit="return saveAdmin(event)">
+                    <input type="hidden" id="editAdminId" value="">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="adminName" placeholder="Enter admin name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="adminMobile" placeholder="10-digit mobile" required pattern="[0-9]{10}" maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="adminEmail" placeholder="admin@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="adminPassword" placeholder="Set password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="adminStatus">
+                            <option value="active">Enable</option>
+                            <option value="disabled">Disable</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer" style="padding:0; border:none; margin-top:20px;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('addAdminModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save Admin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal-overlay" id="addProductModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="productModalTitle">Add Product</h3>
+                <button class="modal-close" onclick="closeModal('addProductModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm" onsubmit="return saveProduct(event)">
+                    <input type="hidden" id="editProductId" value="">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="productName" placeholder="e.g., Turmeric Powder" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="productDescription" rows="3" placeholder="Product description" required style="width:100%; padding:12px 15px; border:2px solid #e0e0e0; border-radius:12px; font-family:'Poppins',sans-serif; font-size:14px; outline:none;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount per Unit (₹)</label>
+                        <input type="number" id="productPrice" placeholder="e.g., 150" required min="1" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Type</label>
+                        <select id="productUnit">
+                            <option value="per 100g">per 100g</option>
+                            <option value="per 250g">per 250g</option>
+                            <option value="per 500g">per 500g</option>
+                            <option value="per kg">per kg</option>
+                            <option value="per pack">per pack</option>
+                            <option value="per piece">per piece</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="productStock" placeholder="e.g., 100" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <div class="image-upload" id="imageUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click or drag to upload image</p>
+                            <input type="file" id="productImage" accept="image/*" onchange="previewImage(event)">
+                        </div>
+                        <img id="imagePreview" class="image-preview" style="display:none;">
+                    </div>
+                    <div class="modal-footer" style="padding:0; border:none; margin-top:20px;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('addProductModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div class="modal-overlay" id="addExpenseModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add Expense</h3>
+                <button class="modal-close" onclick="closeModal('addExpenseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="expenseForm" onsubmit="return saveExpense(event)">
+                    <input type="hidden" id="editExpenseId" value="">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="expenseDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="expenseCategory">
+                            <option value="Rent">Rent</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Packaging">Packaging</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="expenseDesc" placeholder="Expense description" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount (₹)</label>
+                        <input type="number" id="expenseAmount" placeholder="Amount" required min="1" step="0.01">
+                    </div>
+                    <div class="modal-footer" style="padding:0; border:none; margin-top:20px;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('addExpenseModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save Expense</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Purchase Modal -->
+    <div class="modal-overlay" id="addPurchaseModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add Purchase</h3>
+                <button class="modal-close" onclick="closeModal('addPurchaseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="purchaseForm" onsubmit="return savePurchase(event)">
+                    <input type="hidden" id="editPurchaseId" value="">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="purchaseDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Supplier Name</label>
+                        <input type="text" id="purchaseSupplier" placeholder="Supplier name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="purchaseItem" placeholder="Item purchased" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="purchaseQty" placeholder="Quantity" required min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Amount (₹) (Before GST)</label>
+                        <input type="number" id="purchaseAmount" placeholder="Amount" required min="1" step="0.01" oninput="calculatePurchaseGST()">
+                    </div>
+                    <div class="form-group">
+                        <label>GST (%)</label>
+                        <select id="purchaseGST" onchange="calculatePurchaseGST()">
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18" selected>18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                    </div>
+                    <div class="margin-box">
+                        <label>GST Amount: ₹<span id="gstAmountDisplay">0.00</span></label>
+                        <div class="margin-result">
+                            Total: ₹<span id="purchaseTotalDisplay">0.00</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding:0; border:none; margin-top:20px;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('addPurchaseModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save Purchase</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="overlay" id="notifOverlay" onclick="toggleNotifications()"></div>
+    <div class="notification-panel" id="notifPanel">
+        <div class="notification-panel-header">
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <button class="modal-close" onclick="toggleNotifications()">&times;</button>
+        </div>
+        <div class="notification-list" id="notificationList">
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/qrcode.min.js"></script>
+    <script src="../js/superadmin.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bhatts Organic Food & Spices</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-left">
+                <div class="logo">
+					<img src="../images/logo.jpg" alt="Bhatts Organic" class="brand-logo">
+				</div>
+                <h2>Welcome Back!</h2>
+                <p>Login to explore our premium organic spices collection. Experience the authentic taste of nature.</p>
+                <div style="margin-top:40px; opacity:0.7; font-size:60px;">🌿🌶️⭐</div>
+            </div>
+            <div class="auth-right">
+                <h2>Login</h2>
+                <form id="loginForm" onsubmit="return handleLogin(event)">
+                   <!-- <div class="form-group">
+                        <label>Login As</label>
+                        <select id="loginRole">
+                            <option value="user">Customer</option>
+                            <option value="admin">Admin</option>
+                            <option value="superadmin">Super Admin</option>
+                        </select>
+                    </div>-->
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="loginMobile" placeholder="Enter mobile number" required pattern="[0-9]{10}" maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+                        Login <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                <div class="auth-link">
+                    New here? <a href="register.html">Create Account</a>
+                </div>
+                <div class="auth-link" style="margin-top:10px;">
+                    <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #f0fdf4; border-radius: 10px; font-size: 12px; color: #666;">
+                    <strong>Demo Credentials:</strong><br>
+                    Super Admin: 9999999999 / admin123<br>
+                    Admin: 8888888888 / admin123<br>
+                    User: Register to create account
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Bhatts Organic Food & Spices</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="background: #f5f7fa;">
+    <!-- Top Navigation -->
+    <nav class="navbar" style="position:sticky;">
+        <div class="nav-container">
+			<div class="logo">
+				<img src="../images/logo.jpg" alt="Bhatts Organic" class="brand-logo">
+			</div>
+            <div class="search-box" style="flex:1; max-width:400px; margin:0 30px;">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchProducts" placeholder="Search masalas & spices..." oninput="filterProducts()">
+            </div>
+            <div class="top-bar-right">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Welcome Banner -->
+    <div style="background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 40px 20px; color: white; text-align: center;">
+        <h2 style="font-size: 28px; margin-bottom: 8px;">Welcome to Bhatts Organic! 🌿</h2>
+        <p style="opacity: 0.9; font-size: 15px;">Explore our premium collection of organic masalas and spices</p>
+    </div>
+
+    <!-- Social QR Section -->
+    <div style="background: white; padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
+        <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap; align-items:center;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div id="userWhatsappQR" style="width:80px;height:80px;background:#f5f5f5;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;"></div>
+                <div style="text-align:left;">
+                    <p style="font-weight:600; color: var(--primary-dark); font-size:14px;"><i class="fab fa-whatsapp" style="color:#25d366;"></i> WhatsApp</p>
+                    <p style="font-size:12px; color:var(--text-light);">Scan to chat with us</p>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div id="userInstagramQR" style="width:80px;height:80px;background:#f5f5f5;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;"></div>
+                <div style="text-align:left;">
+                    <p style="font-weight:600; color: var(--primary-dark); font-size:14px;"><i class="fab fa-instagram" style="color:#e1306c;"></i> Instagram</p>
+                    <p style="font-size:12px; color:var(--text-light);">Scan to follow us</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="container" style="padding: 30px 20px;">
+        <div class="section-header" style="margin-bottom: 30px;">
+            <h2 style="font-size: 28px;">Our <span class="highlight">Products</span></h2>
+        </div>
+        <div class="user-products-grid" id="userProductsGrid">
+            <!-- Filled by JS -->
+        </div>
+    </div>
+
+    <!-- My Orders -->
+    <div class="container" style="padding: 20px 20px 40px;">
+        <div class="card">
+            <div class="card-header">
+                <h3>My Orders</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myOrdersTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <div class="cart-icon-float" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <!-- Cart Panel -->
+    <div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+            <button class="modal-close" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-state">
+                <i class="fas fa-shopping-basket"></i>
+                <h3>Cart is empty</h3>
+                <p>Add some products to get started!</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-amount" id="cartTotalAmount">₹0</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="openPaymentModal()">
+                <i class="fas fa-lock"></i> Proceed to Payment
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Payment</h3>
+                <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center; margin-bottom:25px;">
+                    <h2 style="color:var(--primary); font-family:'Poppins',sans-serif;">₹<span id="paymentTotal">0</span></h2>
+                    <p style="color:var(--text-light); font-size:14px;">Total Amount</p>
+                </div>
+                <h4 style="margin-bottom: 15px; color: var(--primary-dark);">Select Payment Method</h4>
+                <div class="payment-options" id="paymentOptions">
+                    <div class="payment-option" onclick="selectPayment(this, 'UPI')" data-method="UPI">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>UPI</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this, 'Card')" data-method="Card">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Credit/Debit Card</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this, 'NetBanking')" data-method="NetBanking">
+                        <i class="fas fa-university"></i>
+                        <span>Net Banking</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this, 'COD')" data-method="COD">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Cash on Delivery</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this, 'Wallet')" data-method="Wallet">
+                        <i class="fas fa-wallet"></i>
+                        <span>Wallet</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this, 'EMI')" data-method="EMI">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>EMI</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="width:100%; justify-content:center; margin-top:10px;" onclick="processPayment()" id="payNowBtn" disabled>
+                    <i class="fas fa-check-circle"></i> Pay Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/qrcode.min.js"></script>
+    <script src="../js/user.js"></script>
+</body>
+</html>
